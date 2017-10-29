@@ -102,10 +102,9 @@ library(ggplot2)
 p <- ggplot(data = actsum5, aes(interval, meanNewSteps)) #base plot
 p <- p + geom_line() # add line
 p <- p + facet_grid(weekdayind ~.) # add facets
-p <- p + xlab("Interval") + ylab("Average Steps") 
+p <- p + xlab("Interval") + ylab("Average Steps Taken") 
 plot(p)
 ```
-
 
 
 
