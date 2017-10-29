@@ -105,7 +105,7 @@ text(maxval, labels = paste0("max", ": ", maxval[,1], ",", round(maxval[2])), po
 ![plot of chunk avgsteps](figure/avgsteps-1.png)
 
 #### imupting data
-##### using mean of interval
+##### imputing strategy: rawdata is imputted using using mean of interval
 
 ```r
 rawdata$tempint <- as.character(rawdata$interval)

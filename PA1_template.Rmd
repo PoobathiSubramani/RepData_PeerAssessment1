@@ -63,7 +63,7 @@ text(maxval, labels = paste0("max", ": ", maxval[,1], ",", round(maxval[2])), po
 ```
 
 #### imupting data
-##### using mean of interval
+##### imputing strategy: rawdata is imputted using using mean of interval
 ```{r imuptingData}
 rawdata$tempint <- as.character(rawdata$interval)
 actsum3 <- rawdata %>% 
