@@ -203,10 +203,21 @@ hr {
 <body>
 <h1>PA1_template.rmd</h1>
 
+<h4>Activity Monitor Analysis</h4>
+
+<h6>This analysis provides some insightes into the data collected from Activity Monitor</h6>
+
+<h5>Author: Poobati Subramani</h5>
+
+<h5>Date: Oct 29, 2017</h5>
+
+<h5>&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</h5>
+
 <h4>set the global options</h4>
 
 <pre><code class="r">library(knitr)
 opts_chunk$set(echo = TRUE)
+options(&quot;scipen&quot;=100, &quot;digits&quot;=0)
 </code></pre>
 
 <h4>get the source data for processing. data is stored locally</h4>
@@ -220,14 +231,14 @@ rawdata &lt;- read.csv(&quot;activity.csv&quot;)
 <pre><code class="r">summary(rawdata)
 </code></pre>
 
-<pre><code>##      steps                date          interval     
-##  Min.   :  0.00   2012-10-01:  288   Min.   :   0.0  
-##  1st Qu.:  0.00   2012-10-02:  288   1st Qu.: 588.8  
-##  Median :  0.00   2012-10-03:  288   Median :1177.5  
-##  Mean   : 37.38   2012-10-04:  288   Mean   :1177.5  
-##  3rd Qu.: 12.00   2012-10-05:  288   3rd Qu.:1766.2  
-##  Max.   :806.00   2012-10-06:  288   Max.   :2355.0  
-##  NA&#39;s   :2304     (Other)   :15840
+<pre><code>##      steps              date          interval   
+##  Min.   :  0    2012-10-01:  288   Min.   :   0  
+##  1st Qu.:  0    2012-10-02:  288   1st Qu.: 589  
+##  Median :  0    2012-10-03:  288   Median :1178  
+##  Mean   : 37    2012-10-04:  288   Mean   :1178  
+##  3rd Qu.: 12    2012-10-05:  288   3rd Qu.:1766  
+##  Max.   :806    2012-10-06:  288   Max.   :2355  
+##  NA&#39;s   :2304   (Other)   :15840
 </code></pre>
 
 <pre><code class="r">dim(rawdata)
@@ -268,6 +279,12 @@ activity$date &lt;- as.Date(activity$date)
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
 ##      41    8841   10765   10766   13294   21194       8
 </code></pre>
+
+<pre><code class="r">mn1 &lt;- mean(na.omit(actsum$totalSteps))
+md1 &lt;- median(na.omit(actsum$totalSteps))
+</code></pre>
+
+<h5>mean is 10766 and median is 10765</h5>
 
 <h4>avg number of stpes based on time interval and max of avg</h4>
 
@@ -319,6 +336,12 @@ summary(actsum4$totalStepsNew)
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##      41    9819   10641   10750   12811   21194
 </code></pre>
+
+<pre><code class="r">mn4 &lt;- mean(na.omit(actsum4$totalStepsNew))
+md4 &lt;- median(na.omit(actsum4$totalStepsNew))
+</code></pre>
+
+<h5>mean is 10750 (vs 10766) and median is 10641 (vs 10765)</h5>
 
 <h4>activity paterns by weekdays vs weekends</h4>
 

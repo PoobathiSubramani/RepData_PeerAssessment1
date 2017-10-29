@@ -1,11 +1,16 @@
 # PA1_template.rmd
-
+#### Activity Monitor Analysis
+###### This analysis provides some insightes into the data collected from Activity Monitor
+##### Author: Poobati Subramani
+##### Date: Oct 29, 2017
+##### ---------------------------------------------------------------------------------------
 
 #### set the global options
 
 ```r
 library(knitr)
 opts_chunk$set(echo = TRUE)
+options("scipen"=100, "digits"=0)
 ```
 
 #### get the source data for processing. data is stored locally
@@ -22,14 +27,14 @@ summary(rawdata)
 ```
 
 ```
-##      steps                date          interval     
-##  Min.   :  0.00   2012-10-01:  288   Min.   :   0.0  
-##  1st Qu.:  0.00   2012-10-02:  288   1st Qu.: 588.8  
-##  Median :  0.00   2012-10-03:  288   Median :1177.5  
-##  Mean   : 37.38   2012-10-04:  288   Mean   :1177.5  
-##  3rd Qu.: 12.00   2012-10-05:  288   3rd Qu.:1766.2  
-##  Max.   :806.00   2012-10-06:  288   Max.   :2355.0  
-##  NA's   :2304     (Other)   :15840
+##      steps              date          interval   
+##  Min.   :  0    2012-10-01:  288   Min.   :   0  
+##  1st Qu.:  0    2012-10-02:  288   1st Qu.: 589  
+##  Median :  0    2012-10-03:  288   Median :1178  
+##  Mean   : 37    2012-10-04:  288   Mean   :1178  
+##  3rd Qu.: 12    2012-10-05:  288   3rd Qu.:1766  
+##  Max.   :806    2012-10-06:  288   Max.   :2355  
+##  NA's   :2304   (Other)   :15840
 ```
 
 ```r
@@ -79,6 +84,12 @@ summary(actsum$totalSteps)
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
 ##      41    8841   10765   10766   13294   21194       8
 ```
+
+```r
+mn1 <- mean(na.omit(actsum$totalSteps))
+md1 <- median(na.omit(actsum$totalSteps))
+```
+##### mean is 10766 and median is 10765
 
 #### avg number of stpes based on time interval and max of avg
 
@@ -138,6 +149,12 @@ summary(actsum4$totalStepsNew)
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##      41    9819   10641   10750   12811   21194
 ```
+
+```r
+mn4 <- mean(na.omit(actsum4$totalStepsNew))
+md4 <- median(na.omit(actsum4$totalStepsNew))
+```
+##### mean is 10750 (vs 10766) and median is 10641 (vs 10765)
 
 #### activity paterns by weekdays vs weekends
 
