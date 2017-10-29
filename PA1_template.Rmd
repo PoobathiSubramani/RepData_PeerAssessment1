@@ -1,25 +1,110 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# PA1_template.rmd
 
 
-## Loading and preprocessing the data
+#### set the global options
+```{r, echo=TRUE}
+library(knitr)
+opts_chunk$set(echo = TRUE)
+```
+
+#### get the source data for processing. data is stored locally
+```{r loaddata, chache = TRUE}
+setwd("/Users/boopathi/Datascience/R/assignments/rmarkdown")
+rawdata <- read.csv("activity.csv")
+```
+
+#### check the data 
+```{r checkdata}
+summary(rawdata)
+dim(rawdata)
+str(rawdata)
+```
+
+#### clean the data
+```{r cleandata}
+activity <- rawdata #for now dont remove NAs
+activity$date <- as.Date(activity$date)
+```
+
+#### summarize the data
+```{r summarizeData, echo=FALSE, results='hide'}
+library(dplyr)
+actsum <- rawdata %>%
+    group_by(date) %>%
+    summarise(totalSteps = sum(steps))
+```
+
+#### plot the histogram
+```{r histofsteps}
+hist(actsum$totalSteps, xlab = "Total Steps", main = "Total number of steps per day")
+```
+
+#### mean and median from Summary
+```{r meanandmedian}
+summary(actsum$totalSteps)
+```
+
+#### avg number of stpes based on time interval and max of avg
+```{r avgsteps}
+actsum2 <- rawdata %>% group_by(interval) %>%
+    summarise(avgSteps = mean(na.omit(steps)))
+plot(actsum2$interval, actsum2$avgSteps, type = 'l', xlab = "Interval", ylab = "avg steps")
+maxval <- actsum2[which(actsum2$avgSteps == max(actsum2$avgSteps)),]
+points(maxval, type="p", pch = 19, col = "blue")
+text(maxval, labels = paste0("max", ": ", maxval[,1], ",", round(maxval[2])), pos = 4)
+```
+
+#### imupting data
+##### using mean of interval
+```{r imuptingData}
+rawdata$tempint <- as.character(rawdata$interval)
+actsum3 <- rawdata %>% 
+    group_by(tempint) %>%
+    summarise(meanSteps = as.integer(mean(na.omit(steps)))) #calcualtes mean by intervals
+rawdata <- merge(rawdata, actsum3, by.x = "interval", by.y = "tempint") #add new Steps to rawdata
+rawdata$newSteps <- if_else(is.na(rawdata$steps), as.integer(rawdata$meanSteps), rawdata$steps) #use mean where stpes is NA
+```
+
+
+#### summarize the data, with the imputed data
+```{r summarizeDataNew, echo=FALSE, results='hide'}
+library(dplyr)
+actsum4 <- rawdata %>%
+    group_by(date) %>%
+    summarise(totalStepsNew = sum(na.omit(newSteps)))
+```
+
+#### plot the histogram
+```{r histofstepsNew}
+hist(actsum4$totalStepsNew, xlab = "Total Steps", main = "Total number of steps per day - imputed")
+```
+
+#### mean and median total number of steps taken per day
+```{r meanandmediannew}
+#before imputing
+summary(actsum$totalSteps)
+#after imputing
+summary(actsum4$totalStepsNew)
+```
+
+#### activity paterns by weekdays vs weekends
+```{r weekdayvsend}
+rawdata$date <- as.Date(rawdata$date)
+rawdata$day <- weekdays(rawdata$date, abbreviate = T)
+rawdata$weekdayind <- as.factor(ifelse(rawdata$day %in% c("Sat","Sun"), "Weekend","Weekday"))
+
+actsum5 <- rawdata %>% 
+    group_by(weekdayind,interval) %>%
+    summarise(meanNewSteps = mean(newSteps))
+
+library(ggplot2)
+
+p <- ggplot(data = actsum5, aes(interval, meanNewSteps)) #base plot
+p <- p + geom_line() # add line
+p <- p + facet_grid(weekdayind ~.) # add facets
+p <- p + xlab("Interval") + ylab("Average Steps") 
+plot(p)
+```
 
 
 
-## What is mean total number of steps taken per day?
-
-
-
-## What is the average daily activity pattern?
-
-
-
-## Imputing missing values
-
-
-
-## Are there differences in activity patterns between weekdays and weekends?
